@@ -85,6 +85,27 @@ export default function ChatDetailScreen() {
 
   const recommendedProducts = products.slice(0, 3);
 
+    const renderFormattedText = (text: string) => {
+    const parts = text.split('**');
+  
+    return parts.map((part, index) => {
+      const isBold = index % 2 === 1;
+  
+      return (
+        <Text
+          key={index}
+          style={[
+            // styles.messageText,
+            styles.aiMessageText,
+            isBold && { fontWeight: '700', color: colors.primary },
+          ]}
+        >
+          {part}
+        </Text>
+      );
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -111,7 +132,9 @@ export default function ChatDetailScreen() {
             style={styles.aiMessageWrapper}
           >
             <View style={styles.aiMessage}>
-              <Text style={styles.aiMessageText}>{message.content}</Text>
+              {/* <Text style={styles.aiMessageText}>{message.content}</Text> */}
+              <Text> {renderFormattedText(message.content)} </Text>
+
             </View>
           </Animated.View>
         ))}
