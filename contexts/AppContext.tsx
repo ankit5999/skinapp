@@ -463,13 +463,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     );
   };
 
-  const addNotification = (notification: Omit<Notification, 'id'>) => {
-    const newNotification: Notification = {
-      ...notification,
-      id: `notif-${Date.now()}`,
-    };
-    setNotifications((prev) => [newNotification, ...prev]);
+  // const addNotification = (notification: Omit<Notification, 'id'>) => {
+  //   const newNotification: Notification = {
+  //     ...notification,
+  //     id: `notif-${Date.now()}`,
+  //   };
+  //   setNotifications((prev) => [newNotification, ...prev]);
+  // };
+const MAX_NOTIFICATIONS = 10;
+
+const addNotification = (notification: Omit<Notification, 'id'>) => {
+  const newNotification: Notification = {
+    ...notification,
+    id: `notif-${Date.now()}`,
   };
+
+  setNotifications((prev) => [
+    newNotification,
+    ...prev.slice(0, MAX_NOTIFICATIONS - 1),
+  ]);
+};
 
   return (
     <AppContext.Provider
