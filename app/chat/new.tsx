@@ -248,6 +248,29 @@ export default function NewChatScreen() {
     );
   };
 
+
+  const renderFormattedText = (text: string, isUser: boolean) => {
+  const parts = text.split('**');
+
+  return parts.map((part, index) => {
+    const isBold = index % 2 === 1;
+
+    return (
+      <Text
+        key={index}
+        style={[
+          styles.messageText,
+          isUser ? styles.userMessageText : styles.aiMessageText,
+          isBold && { fontWeight: '700', color: colors.primary },
+        ]}
+      >
+        {part}
+      </Text>
+    );
+  });
+};
+
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -288,15 +311,32 @@ export default function NewChatScreen() {
     />
   )}
 
-  <View
+  {/* <View
     style={[
       styles.messageBubble,
       message.type === 'user'
         ? styles.userMessage
         : styles.aiMessage,
     ]}
-  >
-    <Text
+  > */}
+  <View
+  style={[
+    styles.messageBubble,
+    message.type === 'user'
+      ? styles.userMessage
+      : styles.aiMessage,
+    message.image && {
+      borderTopLeftRadius: 0,
+      borderTopRightRadius: 0,
+    },
+  ]}
+>
+  <Text>
+  {renderFormattedText(message.content, message.type === 'user')}
+</Text>
+
+
+    {/* <Text
       style={[
         styles.messageText,
         message.type === 'user'
@@ -305,7 +345,7 @@ export default function NewChatScreen() {
       ]}
     >
       {message.content}
-    </Text>
+    </Text> */}
   </View>
 </View>
 
@@ -336,7 +376,8 @@ export default function NewChatScreen() {
         ))}
 
         {typingMessage && (
-          <View style={[styles.messageWrapper, styles.aiMessageWrapper]}>
+          // <View style={[styles.messageWrapper, styles.aiMessageWrapper]}>
+          <View style={[styles.aiMessageWrapper, { marginBottom: spacing.sm }]}>
             <View style={[styles.messageBubble, styles.aiMessage]}>
               <Text style={[styles.messageText, styles.aiMessageText]}>
                 {typingMessage}
@@ -452,7 +493,8 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
   },
   messageWrapper: {
-    marginBottom: spacing.md,
+    // marginBottom: spacing.md,
+    marginBottom: spacing.sm,
   },
   userMessageWrapper: {
     alignItems: 'flex-end',
@@ -460,12 +502,22 @@ const styles = StyleSheet.create({
   aiMessageWrapper: {
     alignItems: 'flex-start',
   },
+  // messageBubble: {
+  //   maxWidth: '80%',
+  //   borderRadius: borderRadius.md,
+  //   padding: spacing.md,
+  //   ...shadows.small,
+  // },
   messageBubble: {
-    maxWidth: '80%',
-    borderRadius: borderRadius.md,
-    padding: spacing.md,
-    ...shadows.small,
-  },
+  maxWidth: '80%',
+  padding: spacing.md,
+  borderBottomLeftRadius: borderRadius.md,
+  borderBottomRightRadius: borderRadius.md,
+  borderTopLeftRadius: borderRadius.md,
+  borderTopRightRadius: borderRadius.md,
+  ...shadows.small,
+},
+
   userMessage: {
     backgroundColor: colors.primary,
   },
@@ -488,13 +540,23 @@ const styles = StyleSheet.create({
   //   borderRadius: borderRadius.sm,
   //   marginBottom: spacing.sm,
   // },
-  chatImage: {
-  width: 260,
-  height: 260,
-  borderRadius: borderRadius.md,
-  marginBottom: spacing.xs,
+//   chatImage: {
+//   width: 260,
+//   height: 260,
+//   borderRadius: borderRadius.md,
+//   marginBottom: spacing.xs,
+//   backgroundColor: colors.border,
+//   alignSelf: 'flex-end', // user image alignment
+// },
+chatImage: {
+  width: 250,
+  height: 160,
+  borderTopLeftRadius: borderRadius.md,
+  borderTopRightRadius: borderRadius.md,
+  borderBottomLeftRadius: 0,
+  borderBottomRightRadius: 0,
   backgroundColor: colors.border,
-  alignSelf: 'flex-end', // user image alignment
+  marginBottom: 0,        // ❗ remove gap
 },
 
   messageImage: {
