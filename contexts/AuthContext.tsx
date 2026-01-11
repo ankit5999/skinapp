@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     try {
-      console.log('AuthContext: Starting login for', email);
+      // console.log('AuthContext: Starting login for', email);
 
       const { data, error } = await supabase
         .from('users')
@@ -85,14 +85,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .eq('password', password)
         .maybeSingle();
 
-      console.log('AuthContext: Supabase response', { data: !!data, error });
+      // console.log('AuthContext: Supabase response', { data: !!data, error });
 
       if (error) {
-        console.error('AuthContext: Supabase error', error);
+        // console.error('AuthContext: Supabase error', error);
         throw error;
       }
       if (!data) {
-        console.log('AuthContext: No user found');
+        // console.log('AuthContext: No user found');
         throw new Error('Invalid email or password');
       }
 
@@ -104,7 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
 
       const adminCheck = email === 'admin@skinhealth.com' && password === 'SkinHealthAdmin2024!';
-      console.log('AuthContext: Admin check', adminCheck);
+      // console.log('AuthContext: Admin check', adminCheck);
 
       setUser(userData);
       setIsAdmin(adminCheck);
@@ -112,23 +112,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await AsyncStorage.setItem('user', JSON.stringify(userData));
       await AsyncStorage.setItem('isAdmin', String(adminCheck));
 
-      console.log('AuthContext: Login complete', { user: userData.email, isAdmin: adminCheck });
+      // console.log('AuthContext: Login complete', { user: userData.email, isAdmin: adminCheck });
     } catch (error: any) {
-      console.error('AuthContext: Login error', error);
+      // console.error('AuthContext: Login error', error);
       throw new Error(error.message || 'Login failed');
     }
   };
 
   const logout = async () => {
     try {
-      console.log('AuthContext: Starting logout');
+      // console.log('AuthContext: Starting logout');
       await AsyncStorage.removeItem('user');
       await AsyncStorage.removeItem('isAdmin');
       setUser(null);
       setIsAdmin(false);
-      console.log('AuthContext: Logout completed successfully');
+      // console.log('AuthContext: Logout completed successfully');
     } catch (error) {
-      console.error('AuthContext: Error logging out:', error);
+      // console.error('AuthContext: Error logging out:', error);
       throw error;
     }
   };
